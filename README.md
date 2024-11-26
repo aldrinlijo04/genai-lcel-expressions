@@ -35,6 +35,7 @@ Test the LCEL expression using multiple input values for topic and length.
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain_google_genai import ChatGoogleGenerativeAI
+from google.colab import userdata
 from langchain.output_parsers import StructuredOutputParser, ResponseSchema
 
 # Step 1: Define Parameters and Prompt Template
@@ -61,8 +62,12 @@ response_schemas = [
 output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
 
 # Step 3: Create the LangChain LLM Chain with Gemini Model
-API_KEY = "**************************"
-llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.3, google_api_key=API_KEY)
+API_KEY = userdata.get('GEMINI_API_KEY') # Replace with your API key
+llm = ChatGoogleGenerativeAI(
+    model="gemini-pro", 
+    temperature=0.3, 
+    google_api_key=API_KEY
+)
 
 chain = LLMChain(prompt=prompt_template, llm=llm, output_parser=output_parser)
 
@@ -79,6 +84,7 @@ for example in examples:
         print(f"Output: {result}\n")
     except Exception as e:
         print(f"Error for input {example}: {e}\n")
+
 ```
 
 ### OUTPUT:
